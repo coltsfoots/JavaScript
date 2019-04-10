@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<title>小蜜蜂</title>
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+			}
+			
+			li {
+				list-style: none;
+			}
+			
+			#game {
+				width: 800px;
+				height: 600px;
+				margin: 20px auto;
+				background: #000;
+				position: relative;
+				overflow: hidden;
+			}
+			
+			#beginGame {
+				width: 80px;
+				height: 30px;
+				color: #fff;
+				text-align: center;
+				line-height: 30px;
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				margin-left: -41px;
+				margin-top: -16px;
+				border: 1px solid #fff;
+				cursor: pointer;
+			}
+			
+			#score {
+				color: #fff;
+				font-size: 20px;
+			}
+			
+			#bee {
+				position: relative;
+			}
+			
+			.enemy1 {
+				width: 40px;
+				height: 28px;
+				background: url(img/mf1.png) no-repeat;
+				float: left;
+			}
+			
+			.enemy2 {
+				width: 40px;
+				height: 28px;
+				background: url(img/mf2.png) no-repeat;
+				float: left;
+			}
+			
+			.enemy3 {
+				width: 40px;
+				height: 28px;
+				background: url(img/mf3.png) no-repeat;
+				float: left;
+			}
+			
+			.air {
+				width: 46px;
+				height: 60px;
+				background: url(img/fj.png) no-repeat;
+				position: absolute;
+			}
+			
+			.bullet {
+				width: 1px;
+				height: 10px;
+				overflow: hidden;
+				background: #fff;
+				position: absolute;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="game">
+			<div id="beginGame">开始游戏</div>
+		</div>
+	</body>
+	<script>
+		window.onload = function() {
+			var oBtn = document.getElementById('beginGame');
+			oBtn.onclick = function() {
+				this.style.display = 'none';
+				Game.init('game');
+			}
+		};
+		var Game = {
+			oEnemy: {
+				e1: {
+					style: 'enemy1',
+					blood: 1,
+					speed: 2,
+					score: 1
+				},
+				e2: {
+					style: 'enemy2',
+					blood: 2,
+					speed: 4,
+					score: 2
+				},
+				e3: {
+					style: 'enemy3',
+					blood: 3,
+					speed: 7,
+					score: 3
+				}
+			},
+			gk: [{
+				eMap: [
+					'e1', 'e1', 'e1', 'e1', 'e1', 'e1', 'e1', 'e1', 'e1', 'e1',
+					'e1', 'e1', 'e1', 'e1', 'e1', 'e1', 'e1', 'e1', 'e1', 'e1',
+					'e1', 'e1', 'e1', 'e1', 'e1', 'e1', 'e1', 'e1', 'e1', 'e1',
+					'e1', 'e1', 'e1', 'e1', 'e1', 'e1', 'e1', 'e1', 'e1', 'e1',
+					'e1', 'e1', 'e1', 'e1', 'e1', 'e1', 'e1', 'e1', 'e1', 'e1',
+					'e1', 'e1', 'e1', 'e1', 'e1', 'e1', 'e1', 'e1', 'e1', 'e1'
+				],
+				colNum: 10,
+				speedX: 10,
+				speedY: 10,
+				times: 6000
+			}, {
+				eMap: [
+					'e2', 'e2', 'e2', 'e2', 'e2', 'e2', 'e2', 'e2', 'e2', 'e2',
+					'e2', 'e2', 'e2', 'e2', 'e2', 'e2', 'e2', 'e2', 'e2', 'e2',
+					'e2', 'e2', 'e2', 'e2', 'e2', 'e2', 'e2', 'e2', 'e2', 'e2',
+					'e1', 'e1', 'e1', 'e1', 'e1', 'e1', 'e1', 'e1', 'e1', 'e1',
+					'e1', 'e1', 'e1', 'e1', 'e1', 'e1', 'e1', 'e1', 'e1', 'e1',
+					'e1', 'e1', 'e1', 'e1', 'e1', 'e1', 'e1', 'e1', 'e1', 'e1'
+				],
+				colNum: 10,
+				speedX: 12,
+				speedY: 10,
+				times: 5000
+			}, {
+				eMap: [
+					'e2', 'e2', 'e2', 'e2', 'e2', 'e2', 'e2', 'e2', 'e2', 'e2',
+					'e2', 'e2', 'e2', 'e2', 'e2', 'e2', 'e2', 'e2', 'e2', 'e2',
+					'e2', 'e2', 'e2', 'e2', 'e2', 'e2', 'e2', 'e2', 'e2', 'e2',
+					'e2', 'e2', 'e2', 'e2', 'e2', 'e2', 'e2', 'e2', 'e2', 'e2',
+					'e2', 'e2', 'e2', 'e2', 'e2', 'e2', 'e2', 'e2', 'e2', 'e2',
+					'e2', 'e2', 'e2', 'e2', 'e2', 'e2', 'e2', 'e2', 'e2', 'e2'
+				],
+				colNum: 10,
+				speedX: 14,
+				speedY: 10,
+				times: 4000
+			}, {
+				eMap: [
+					'e3', 'e3', 'e3', 'e3', 'e3', 'e3', 'e3', 'e3', 'e3', 'e3',
+					'e3', 'e3', 'e3', 'e3', 'e3', 'e3', 'e3', 'e3', 'e3', 'e3',
+					'e3', 'e3', 'e3', 'e3', 'e3', 'e3', 'e3', 'e3', 'e3', 'e3',
+					'e2', 'e2', 'e2', 'e2', 'e2', 'e2', 'e2', 'e2', 'e2', 'e2',
+					'e2', 'e2', 'e2', 'e2', 'e2', 'e2', 'e2', 'e2', 'e2', 'e2',
+					'e2', 'e2', 'e2', 'e2', 'e2', 'e2', 'e2', 'e2', 'e2', 'e2'
+				],
+				colNum: 10,
+				speedX: 16,
+				speedY: 10,
+				times: 3000
+			}, {
+				eMap: [
+					'e3', 'e3', 'e3', 'e3', 'e3', 'e3', 'e3', 'e3', 'e3', 'e3',
+					'e3', 'e3', 'e3', 'e3', 'e3', 'e3', 'e3', 'e3', 'e3', 'e3',
+					'e3', 'e3', 'e3', 'e3', 'e3', 'e3', 'e3', 'e3', 'e3', 'e3',
+					'e3', 'e3', 'e3', 'e3', 'e3', 'e3', 'e3', 'e3', 'e3', 'e3',
+					'e3', 'e3', 'e3', 'e3', 'e3', 'e3', 'e3', 'e3', 'e3', 'e3',
+					'e3', 'e3', 'e3', 'e3', 'e3', 'e3', 'e3', 'e3', 'e3', 'e3'
+				],
+				colNum: 10,
+				speedX: 20,
+				speedY: 10,
+				times: 2000
+			}],
+			air: {
+				style: 'air',
+				bulletStyle: 'bullet'
+			},
+			init: function(id) { //初始化
+				this.oParent = document.getElementById(id);
+				this.createScore();
+				this.createEnemy(0);
+				this.createAir();
+			},
+			createScore: function() { //积分
+				var oS = document.createElement('div');
+				oS.id = 'score';
+				oS.innerHTML = '积分：<span>0</span>';
+				this.oParent.appendChild(oS);
+				this.oSNum = oS.getElementsByTagName('span')[0];
+			},
+			createEnemy: function(iNow) {
+				var gk = this.gk[iNow];
+				var liPosArr = [];
+				var oUl = document.createElement('ul');
+				oUl.id = 'bee';
+				oUl.style.width = gk.colNum * 40 + 'px';
+				this.oParent.appendChild(oUl);
+				this.oUl = oUl;
+				oUl.style.left = (this.oParent.offsetWidth - oUl.offsetWidth) / 2 + 'px';
+
+				for(var i = 0; i < gk.eMap.length; i++) { //循环创建敌人
+					var oLi = document.createElement('li');
+					oLi.className = this.oEnemy[gk.eMap[i]].style;
+					oLi.blood = this.oEnemy[gk.eMap[i]].blood;
+					oLi.speed = this.oEnemy[gk.eMap[i]].speed;
+					oLi.score = this.oEnemy[gk.eMap[i]].score;
+					oUl.appendChild(oLi);
+				}
+
+				this.aLi = oUl.getElementsByTagName('li');
+
+				for(var i = 0; i < this.aLi.length; i++) {
+					liPosArr.push([this.aLi[i].offsetLeft, this.aLi[i].offsetTop]);
+				}
+
+				for(var i = 0; i < this.aLi.length; i++) {
+					this.aLi[i].style.position = 'absolute';
+					this.aLi[i].style.left = liPosArr[i][0] + 'px';
+					this.aLi[i].style.top = liPosArr[i][1] + 'px';
+				}
+				this.moveEnemy(gk); //调用敌人移动方法
+			},
+			moveEnemy: function(gk) { //敌人的移动
+				var This = this;
+				var L = 0;
+				var R = this.oParent.offsetWidth - this.oUl.offsetWidth;
+				setInterval(function() {
+					if(This.oUl.offsetLeft >= R) {
+						gk.speedX *= -1;
+						This.oUl.style.top = This.oUl.offsetTop + gk.speedY + 'px';
+					} else if(This.oUl.offsetLeft <= L) {
+						gk.speedX *= -1;
+						This.oUl.style.top = This.oUl.offsetTop + gk.speedY + 'px';
+					}
+					This.oUl.style.left = This.oUl.offsetLeft + gk.speedX + 'px';
+				}, 400);
+			},
+			createAir: function() { //玩家（飞机）
+				var oA = document.createElement('div');
+				oA.className = 'air';
+				this.oA = oA;
+				this.oParent.appendChild(oA);
+				oA.style.top = this.oParent.offsetHeight - oA.offsetHeight + 'px';
+				oA.style.left = (this.oParent.offsetWidth - oA.offsetWidth) / 2 + 'px';
+				this.movePlayer();
+			},
+			movePlayer: function() { //玩家（飞机）移动
+				var timer = null;
+				var This = this;
+				var iNum = 0;
+				document.onkeypress = function(ev) {
+					var ev = ev || window.event;
+					if(!timer) {
+						timer = setInterval(moveAir, 30);
+					}
+					if(ev.keyCode == 37) {
+						iNum = 1;
+					} else if(ev.keyCode == 39) {
+						iNum = 2;
+					}
+				}
+				document.onkeyup = function(ev) {
+					var ev = ev || window.event;
+					if(ev.keyCode == 32) {
+						This.createBullet();
+					} else if(ev.keyCode == 37 || ev.keyCode == 39) {
+						clearInterval(timer);
+						timer = null;
+						iNum = 0;
+					}
+				}
+
+				function moveAir() {
+					if(iNum == 1) {
+						This.oA.style.left = This.oA.offsetLeft - 10 + 'px';
+					} else if(iNum == 2) {
+						This.oA.style.left = This.oA.offsetLeft + 10 + 'px';
+					}
+				}
+			},
+			createBullet: function() {
+				var oB = document.createElement('div');
+				oB.className = this.air.bulletStyle;
+				this.oParent.appendChild(oB);
+				oB.style.left = this.oA.offsetLeft + this.oA.offsetWidth / 2 + 'px';
+				oB.style.top = this.oA.offsetTop - 10 + 'px';
+
+				this.moveBullet(oB);
+			},
+			moveBullet: function(oB) {
+				var This = this;
+				oB.timer = setInterval(function() {
+					if(oB.offsetTop <= -10) {
+						clearInterval(oB.timer);
+						This.oParent.removeChild(oB);
+					} else {
+						oB.style.top = oB.offsetTop - 10 + 'px';
+					}
+					for(var i = 0; i < This.aLi.length; i++) {
+						if(This.pz(oB, This.aLi[i])) {
+							if(This.aLi[i].blood == 1) {
+								This.oSNum.innerHTML = parseInt(This.oSNum.innerHTML) + This.aLi[i].score;
+								This.oUl.removeChild(This.aLi[i]);
+							} else {
+								This.aLi[i].blood--;
+							}
+							clearInterval(oB.timer);
+							This.oParent.removeChild(oB);
+						}
+					}
+				}, 30);
+			},
+			pz: function(obj1, obj2) {
+				var L1 = obj1.offsetLeft;
+				var R1 = obj1.offsetLeft + obj1.offsetWidth;
+				var T1 = obj1.offsetTop;
+				var B1 = obj1.offsetTop + obj1.offsetHeight;
+
+				var L2 = obj2.offsetLeft + obj2.parentNode.offsetLeft;
+				var R2 = obj2.offsetLeft + obj2.offsetWidth + obj2.parentNode.offsetLeft;
+				var T2 = obj2.offsetTop + obj2.parentNode.offsetTop;
+				var B2 = obj2.offsetTop + obj2.offsetHeight + obj2.parentNode.offsetTop;
+
+				if(R1 < L2 || L1 > R2 || B1 < T2 || T1 > B2) {
+					return false;
+				} else {
+					return true;
+				}
+			}
+		}
+	</script>
+
+</html>
