@@ -1,0 +1,26 @@
+{
+    "editor.fontSize": 16,
+    "editor.insertSpaces": false,
+    "editor.wordWrap": "on",
+    "explorer.confirmDelete": false,
+    "editor.tabSize": 2,
+    "files.autoSave": "off",
+    "eslint.validate": [
+        "javascript",
+        "javascriptreact",
+        "vue-html",
+        {
+            "language": "vue",
+            "autoFix": true
+        }
+    ],
+    // "eslint.options": {
+    //     "plugins": ["html"]
+    //  },
+    "eslint.run": "onSave",
+    "eslint.autoFixOnSave": true,
+    "eslint.packageManager": "yarn",
+    "editor.acceptSuggestionOnCommitCharacter": false,
+    "editor.fontLigatures": true,
+    "workbench.startupEditor": "newUntitledFile"
+}
