@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+	<style>
+		ul{
+			padding: 0;
+			margin: 0;
+			margin: 80px auto;
+			list-style: none;
+			width: 240px;
+			height: 240px;
+			background: #fff;
+		}
+		li{
+			background-size: 100%;
+			outline: 1px solid #fff;
+			font-size: 20px;
+			text-align: center;
+		}
+		li:only-child{
+			height: 100%;
+		}
+		li:first-child:nth-last-child(2),
+		li:first-child:nth-last-child(2) + li {
+			width: 50%;
+			height: 50%;
+		}
+		li:first-child:nth-last-child(2) + li {
+			margin-left: auto;
+		}
+		li:first-child:nth-last-child(3),
+		li:first-child:nth-last-child(3) ~ li {
+			width: 50%;
+			height: 50%;
+		}
+		li:first-child:nth-last-child(3) {
+			margin: auto;
+		}
+		li:first-child:nth-last-child(3) ~ li {
+			float: left;
+		}
+		li:first-child:nth-last-child(4),
+		li:first-child:nth-last-child(4) ~ li {
+			width: 50%;
+			height: 50%;
+			float: left;
+		}
+		li:first-child:nth-last-child(5),
+		li:first-child:nth-last-child(6),
+		li:first-child:nth-last-child(7),
+		li:first-child:nth-last-child(8),
+		li:first-child:nth-last-child(9),
+		li:first-child:nth-last-child(5) ~ li,
+		li:first-child:nth-last-child(6) ~ li,
+		li:first-child:nth-last-child(7) ~ li,
+		li:first-child:nth-last-child(8) ~ li,
+		li:first-child:nth-last-child(9) ~ li {
+			width: 80px;
+			height: 80px;
+			float: left;
+		}
+		li:first-child:nth-last-child(5) {
+			margin: 40px 0 0 40px;
+		}
+		/* TODO: 这个样式或许有优化的方法，不过目前不清楚 */
+		li:first-child:nth-last-child(6),
+		li:first-child:nth-last-child(5) + li,
+		li:first-child:nth-last-child(6) + li,
+		li:first-child:nth-last-child(6) + li + li {
+			margin-top: 40px;
+		}
+		li:first-child:nth-last-child(7) {
+			float: none;
+			margin: auto;
+		}
+		li:first-child:nth-last-child(8) {
+			margin-left: 40px;
+		}
+	</style>
+</head>
+<body>
+	<ul id="avatar-container">
+		<li style="background: #661155;"></li>
+	</ul>
+
+	<button type="button" id="add" style="margin: 20px auto;display: block;">添加一个</button>
+	<script>
+		window.onload = function() {
+			const addBtn = document.getElementById('add')
+			const ul = document.getElementById('avatar-container')
+			let count = 1;
+			addBtn.onclick = function() {
+				if(count === 9) {
+					alert('到头啦')
+					return;
+				}
+				const li = document.createElement('li')
+				li.style.backgroundColor = randomRGBA()
+				ul.appendChild(li)
+				count ++
+			}
+
+			function randomRGBA() {
+				const r = Math.floor(Math.random() * 256)
+				const g = Math.floor(Math.random() * 256)
+				const b = Math.floor(Math.random() * 256)
+				const a = Math.random()
+				return `rgba(${r}, ${g}, ${b}, ${a})`
+			}
+		}
+	</script>
+</body>
+</html>
