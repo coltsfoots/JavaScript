@@ -8,4 +8,6 @@
 
 [贪吃蛇游戏](https://coltsfoots.github.io/JavaScript/snake.html)
 
+[微信群头像](https://coltsfoots.github.io/JavaScript/avatar.html)
+
 后续会添加打砖块、俄罗斯方块等等
