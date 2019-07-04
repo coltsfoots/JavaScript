@@ -10,6 +10,6 @@
 
 [微信群头像](https://coltsfoots.github.io/JavaScript/avatar.html)
 
-[图表](https://coltsfoots.github.io/JavaScript/echarts/index.html)
+[图表](https://coltsfoots.github.io/JavaScript/dist/index.html)
 
 后续会添加打砖块、俄罗斯方块等等
