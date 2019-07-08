@@ -264,7 +264,7 @@
 				var timer = null;
 				var This = this;
 				var iNum = 0;
-				document.onkeypress = function(ev) {
+				document.onkeydown = function(ev) {
 					var ev = ev || window.event;
 					if(!timer) {
 						timer = setInterval(moveAir, 30);
